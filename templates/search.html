@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+<body>
+
+     {% block content%}
+     <main>
+        {% if searched %}
+        {%for product in searched%}
+        <div class="gallery">
+            <img src="{{product.image.url}}" height="200" width="200" >
+            <div class="des">
+                <span>{{ product.description }}</span>
+                <h5>{{product.name}}</h5>
+                <div class="star">
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                </div>
+                <h4>{{ product.price}}</h4>
+            </div>
+            <i class="ri-shopping-cart-fill cart"></i>
+        </div>
+        {% endfor%}
+        {% else %}
+        <p>you didnt search</p>
+        {% endif%}
+         
+        
+     </main>
+    
+{% endblock%}
+ 
+ 
+
+  
+</body>

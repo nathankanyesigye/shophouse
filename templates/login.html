@@ -1,0 +1,94 @@
+
+<style>
+body{
+    position: absolute;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+h3{
+    color: red;
+
+}
+body{
+    align-items: center;
+    text-align: center;
+    padding-top: 100px;
+    background-color: silver;
+}
+.form{
+    align-items: center;
+    text-align: center;
+    margin: 10px 550px;
+    padding: 15px;
+    border: 2px solid #eeee;
+    width: 300px;
+    background-color: hsl(210, 24%, 93%);
+    
+    
+}
+div1{
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    
+
+}
+button{
+    background-color:teal;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 15px 20px;
+    cursor: pointer;
+    margin: 8px 0;
+    width: 50%;
+}
+button:hover{
+    opacity: 0.8;
+}
+@media screen and (max-width: 480px){
+    .form {
+        width: 90%;
+        
+    }
+    body{
+        font-family: Arial, Helvet;
+        padding-top: 200px;
+        margin: auto;
+        
+        
+    }
+    button{
+        width: 100%;
+    }
+    div1{
+        flex-direction: row;
+        margin-top: 100px;
+    }
+}
+
+    
+</style>
+<body>
+    {% for message in messages %}
+    <h3>{{message}}</h3>
+    {% endfor %}
+    <div class="div1">
+        <div class="form">
+            <form  action="login" method="POST">
+                <h1>Login Now</h1>
+                {% csrf_token %}
+                <p>Username:</p>
+                <input type="text" name="username"/>
+                <p>Password:</p>
+                <input type="password" name="password"/><br><br>
+                <button type="submit">Login</button>
+                <a href="{% url 'register' %}"><p>Create An Account</p></a>
+                <a href="#"><p>forgot password?</p></a>
+            </form>
+        </div>
+    </div>   
+</body>

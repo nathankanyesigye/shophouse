@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shophouse</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link  rel="stylesheet" href="{% static 'Style2.css' %}">
+    <link rel="icon" type="image/png" href="front-end\images\shopicon.png">
+</head>
+<body>
+    <header >
+        
+        <section id="h1" >
+            <h1>SHopHouSE<i class="ri-home-smile-line"></i></h1>
+            <section id="search" class="d-flex" method=POST  action="{% url 'search-products' %}" >
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </section>
+        </section>  
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="ri-home-8-fill"></i>Home</a></li>
+                <li><a href="#"><i class="ri-product-hunt-line"></i>Products</a></li>
+                <li><a href="#"><i class="ri-menu-5-line"></i>Categories</a></li>
+                <li><a href="#"><i class="ri-phone-line"></i>Contact</a></li>
+                <li><a href="#"><i class="ri-menu-2-fill"></i>About Us</a></li>
+            </ul>
+        </nav>
+        {% block content%}
+        <p>this is our cart page</p>
+        {%endblock%}
+        
+        <footer>
+            <p>We Deliver</p>
+            <h3>Follow us on social media!</h3>  
+            <ul> 
+                <li><i class="ri-facebook-circle-fill"></i></li>
+                <li><i class="ri-youtube-line"></i></li>
+                <li><i class="ri-instagram-line"></i></li>
+                <li><i class="ri-twitter-line"></i></li>
+            </ul>
+     
+         
+            Author:Group six<br>
+            &copy; copyright reserved<br>
+            <small><a href="mailtro:shophouse@gmail.com">shophouse@gmail.com</a></small>
+     
+         </footer>    
+
+</body>

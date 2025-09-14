@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+<body>
+{% block content %}
+
+<main>
+   <section id="prods">
+      <h1>Our businesses</h1>
+      <div class="product-div">
+          
+    
+   
+   {% for business in businesses %}
+         <div class="gallery">
+            <div class="des">
+               <span>{{ business.name_of_business }}</span>
+               <h5>{{ business.type_of_business}}</h5>
+               <div class="star">
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+               </div>
+               
+               <h4>{{ business.description}}</h4>
+            </div>
+         </div>
+   {% endfor %}
+      </div>
+   </section>
+</main>
+{% endblock%}
+</body>

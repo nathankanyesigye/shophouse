@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shophouse</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link  rel="stylesheet" href="{% static 'Style211.css' %}">
+    <link rel="icon" type="image/png" href="static/images/icon.jpg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header >
+        
+        <section id="h1" >
+            <h1>SHopHouSE<i class="ri-home-smile-line"></i></h1>
+            <section id="search" class="d-flex"  >
+                <form action="{% url 'search-products' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="search" class="form-control" placeholder="Search..." name="searched">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+    
+                </form>
+                <a href="{% url 'cart' %}">
+                    <button class="round-button"  type="submit" ><i id="cart" class="ri-shopping-cart-fill"></i></button>
+                    <!-- <span class="badge bg-dark text-white  rounded-pill"
+                    id="cart_quantity">{{ cart|length }}
+                </span> -->
+                </a>
+            </section>
+            
+        </section> 
+        </header>
+        <nav>
+            <ul>
+                <li><a href="{%url 'home' %}"><i class="ri-home-8-fill"></i>Home</a></li>
+                <li><a href="{%url 'addproduct' %}"><i class="ri-product-hunt-line"></i>Add Products</a></li>
+                <li><a href="#"><i class="ri-menu-5-line"></i>Categories</a></li>
+                <li><a href="{%url 'about' %}"><i class="ri-menu-2-fill"></i>About Us</a></li>
+            </ul>
+        </nav>
+        {% block content%}
+
+        {%endblock%}
+        
+        <footer>
+            <div class="container text center text-md-left">
+                <div class="row text-center text-md-left">
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold text-warning">Shophouse</h6>
+                        <p>Our mission is to ease online shopping for our clients.</p>
+                    <br>
+                    <p> This is achieved through having an easily navigable page along with easy to understand categories.</p>
+                     </div>
+                    
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold text-warning">top Products</h6>
+                        <p>
+                            <a href="#!" class="text-white" style="text-decoration: none">Electronics</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white" style="text-decoration: none">Accesories</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white" style="text-decoration: none">Fashion</a> 
+                        </p>
+                        <p>
+                          <a href="mailto:info@example.com?subject=Subject&body=Body" class="text-white" style="text-decoration: none">Bags</a>
+                        </p>
+                    </div>
+                    <div class="col-md-3 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold text-warning">links</h6>
+                        <p>
+                            <a href="#!" class="text-white" style="text-decoration: none">Contacts</a>
+                        </p>
+                        <p>
+                            <a href="#! " class="text-white" style="text-decoration: none">About us</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white" style="text-decoration: none"></a> 
+                        </p>
+                        
+    
+                    </div>
+                    
+                </div>
+           </div>
+           
+           <p>We Deliver</p>
+           <h3>Follow us on social media!</h3>  
+           <ul> 
+               <li><i class="ri-facebook-circle-fill"></i></li>
+               <li><i class="ri-youtube-line"></i></li>
+               <li><i class="ri-instagram-line"></i></li>
+               <li><i class="ri-twitter-line"></i></li>
+           </ul>
+    
+        
+           Author:Group six<br>
+           &copy; copyright reserved<br>
+           <small><a href="https://shophouse.pythonanywhere.com/">shophouse.pythonanywhere.com/</a></small>
+         </footer>  
+        
+
+        
+
+</body>

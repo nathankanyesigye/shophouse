@@ -1,0 +1,92 @@
+
+<style>
+    *{
+        box-sizing: border-box;
+    }
+body{
+    position: absolute;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    background-color: silver;
+
+
+
+}
+h5{
+    color: red;
+}
+h1{
+    font-size : 30px;
+    text-align: center;
+
+}
+.form{
+    align-items: center;
+    text-align: center;
+    margin: 10px 550px;
+    padding: 10px;
+    border: 1px solid #eeee;
+    width: 300px;
+    background-color: hsl(210, 24%, 93%);
+    
+}
+.container{
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    
+    
+    
+}
+input[type = text], input[type=password],input[type=email]{
+width: 100%;
+padding: 5px 20px;
+margin: 8px 0;
+display: inline-block; 
+}
+
+button{
+    background-color: teal;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 15px 20px;
+    cursor: pointer;
+    margin: 8px 0;
+    width: 50%;
+}
+button:hover{
+    opacity: 0.8;
+}
+</style>
+
+
+
+<body>
+    <div class="container">
+       
+        {% for message in messages %}
+        <h5>{{message}}</h5>    
+        {% endfor %}
+        <div class="form">
+            <h1>Update Profile </h1>
+            <form  method="POST" action="{% url 'update_user' %}"> 
+                {% csrf_token %}
+                <p>Username:</p>
+                <input type="text" name="username"/>
+                <p>Email:</p>
+                <input type="email" name="email"/>
+                <p>Password:</p>
+                <input type="password" name="password"/>
+                <p>Repeat Password:</p>
+                <input type="password" name="password2"/><br>
+                <button  type="submit">Update profile</button><br/>
+
+
+            </form>
+        </div>
+    </div>
+</body>

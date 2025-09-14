@@ -1,0 +1,138 @@
+body {
+    font-family: verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+   
+   
+}
+header {
+    font-family: didot;
+    
+    font-size: 30px;
+    background-color: whitesmoke;
+    
+    background-size: cover;
+    background-position: top 30% right 0;
+    color: rgba(57, 56, 56, 0.893);
+    padding: 10px 20px;
+    
+    
+}
+header #h1{
+    display: flex;
+    
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+header #top{
+    display: flex;
+    
+    align-items: flex-start;
+    justify-content: space-between;
+}
+header #search{
+    padding-top: 50px;
+    
+    
+}
+ul li {
+    display: inline;
+    margin-right: 50px;
+
+}
+
+ul li:hover{
+    color: blue;
+}
+nav {
+    position:sticky;
+    top:0;
+    right:0;
+    background-color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border: 3px solid white;
+    box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.03);
+    
+    
+
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+nav ul li {
+    display: inline;
+    margin-right: 50px;
+}
+nav ul li a {
+    color: grey;
+    text-decoration: none;
+}
+nav ul li a:hover {
+    color: black;
+}
+footer {
+    font-style: italic;
+    background-color: grey;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+main{
+    background-color: hsl(210, 24%, 93%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: greyblack;
+    padding: 15px 20px;
+    text-align: center;
+    flex: 1 0 auto;
+    
+    
+   
+    margin:5px;
+}
+.gallery{
+   
+    width: 300px;
+    text-align: center;
+    padding: 25px 15px;
+    box-shadow: 20px 20px 34px rgb(0,0,0,0.03);
+    border: 1px solid #cce7d0;
+    border-radius: 4px;
+    margin: 10px;
+
+
+}
+
+.product-div{
+    display: flex; 
+    flex-wrap: wrap;  
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 500px;
+}
+
+.search-button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .images{
+    display:flex; 
+    flex-wrap: wrap; 
+    justify-content: center;
+
+  }
+

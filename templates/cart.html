@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+<body>
+{% block content %}
+
+<main>
+    
+   <h1>Your shopping cart contains:</h1>
+   
+   <thead>
+    you added
+  </thead>
+  <!-- <a href=""><h1><i class="ri-delete-bin-6-line"></i></h1></a> -->
+   {% for cart_item in cart_items %}
+<table class="table">
+      <tr>
+        <!-- <th scope="row">{{ cart_item.product.id }}</th> -->
+        <td colspan="2" class="table-active">{{ cart_item.product.name }}</td>
+        <td>{{ cart_item.product.price }}</td>
+        <td>{{ cart_item.quantity }}</td>
+        <td>{{ cart_item.product. }}</td>
+        <td>Ugx.{{ cart_item.sub_total }}</td>
+        <td>
+          <a href="{% url 'remove_cart' cart_item.product.id %}">
+              <i class="ri-delete-bin-6-line"></i>
+          </a>
+      </td>
+      
+      </tr>
+    </tbody>
+  </table>
+  {% endfor%} 
+</main>
+{% endblock%}
+</body>

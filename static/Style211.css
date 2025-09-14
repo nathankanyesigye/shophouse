@@ -1,0 +1,252 @@
+body {
+    font-family: verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+   
+   
+}
+header {
+    font-family: didot;
+    
+    font-size: 30px;
+    background-color: whitesmoke;
+    
+    background-size: cover;
+    background-position: top 30% right 0;
+    color: teal;
+    padding: 10px 20px;
+    
+    
+}
+header #h1{
+    display: flex;
+    
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+header #top{
+    display: flex;
+    
+    align-items: flex-start;
+    justify-content: space-between;
+}
+header #search{
+    padding-top: 50px;
+    
+    
+}
+#cart{
+    height: 100px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #e8f6ea;
+    font-weight: 500;
+    color:#088178;
+    
+    bottom: 20px;
+    right: 10px;
+}
+.round-button {
+    background-color: white;
+    border: none; 
+    color: white; 
+    padding: 1px 15px; 
+    text-align: center; 
+    
+    margin: 4px 2px; 
+    cursor: pointer; 
+    border-radius: 50%; 
+  }
+.round-button:hover {background-color:silver;}
+ul li {
+    display: inline;
+    margin-right: 50px;
+
+}
+
+ul li:hover{
+    color: blue;
+}
+nav {
+    position: static;
+    top:0;
+    right:0;
+    background-color: hsl(210, 24%, 93%);
+    padding: 10px 20px;
+    text-align: center;
+    border: 3px solid white;
+    box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.03);
+    
+    
+
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li a {
+    color: teal;
+    text-decoration: none;
+}
+nav ul li a:hover {
+    color: gold;
+}
+
+
+footer {
+    font-style: italic;
+    background-color: teal;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+main{
+    background-color: whitesmoke;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: teal;
+    padding: 15px 20px;
+    text-align: center;
+    flex: 1 0 auto;
+    margin:5px;
+}
+.gallery{
+   
+    width:23%;
+    min-width: 250px;
+    padding: 10px 12px;
+    box-shadow: 20px 20px 34px rgb(0,0,0,0.03);
+    border: 1px solid #cce7d0;
+    border-radius: 25px;
+    margin: 15px 0;
+    cursor: pointer;
+    position: relative;
+   
+
+
+
+}
+.gallery:hover{
+    box-shadow: 20px 20px 34px rgb(0,0,0,0.06);
+
+}
+
+.gallery img{
+    width: 250px;
+    height: 250px;
+    border-radius: 20px;
+
+}
+
+.gallery .des{
+    text-align: start;
+    padding: 10px 0;
+}
+.gallery .des i{
+    font-size: 12px;
+    color: rgb(243,181,25);
+  }
+.gallery .des span{
+    color: #060663;
+    font-size: 12px;
+    }
+.gallery .des h5 {
+    padding: 7px;
+    color: #1a1a1a;
+    font-size: 14px;
+  }
+  .gallery .des h4{
+    padding-top: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #088178;
+  }
+  .gallery .cart{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50px;
+    background-color: #e8f6ea;
+    font-weight: 500;
+    color:#088178;
+    border: 1px solid #cce7d0;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    }
+
+    .gallery:hover{
+        /* box-shadow: 0 19px 38px rgba(0,0,0,.2), 0 15px 12px rgba(0,0,0,.22) !important; */
+        transform: (0px, -20px);
+        transform: translateY(-10px);
+    }
+
+    .gallery .cart:hover{
+        color:gold;
+    }
+
+.product-div{
+    display: flex; 
+    padding: 20px;
+    flex-wrap:wrap;
+    justify-content:space-between; 
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 500px;
+}
+
+.search-button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .images{
+    display:flex; 
+    flex-wrap: wrap; 
+    justify-content: center;
+
+  }
+  #prods{
+    text-align: center;
+
+  }
+
+@media screen and (max-width: 480px) {
+    .container {
+      width: 100%;
+      padding: 0 20px;
+    }
+.search-input, .search-button {
+    width: calc(100% - 30px);
+    margin-bottom: 10px;
+
+       
+
+}
+nav ul li {
+    float: left;
+    list-style: none;
+    margin-right: 10px;
+    
+}
+header{
+    font-size: 16px;
+
+}
+nav ul{
+    display: inline-block;
+    vertical-align: middle;
+}
+ }
