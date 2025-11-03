@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'shophouse',
-    
+    'dashboard',
+    'cart',
 ]
 
 MIDDLEWARE = [

@@ -159,24 +159,17 @@ def deleteproduct(request,pk):
 
 
 #cart functions
+from cart.cart import Cart
 
-def cart(request,total=0,quantity=0,cart_items=None):
-    try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items =CartItem.objects.filter(cart=cart, is_active=True)
-        for cart_item in cart_items:
-            total+=(cart_item.product.price* cart_item.quantity)
-            quantity+=cart_item.quantity
-            
-    except Product.DoesNotExist:
-        pass
-    
-    context={
-        'total':total,
-        'quantity':quantity,
-        'cart_items':cart_items,
+def cart(request):
+    cart = Cart(request)
+    cart_products = cart.get_prods()
+    total = cart.get_total_price()
+    context = {
+        'cart_products': cart_products,
+        'total': total,
     }
-    return render(request, 'cart.html', context )
+    return render(request, 'cart.html', context)
 
 # session function
 def _cart_id(request):
@@ -186,39 +179,21 @@ def _cart_id(request):
     return cart
 
 # Add cart function
-def add_cart(request,product_id):
-    product = Product.objects.get(id=product_id)
+def add_cart(request, product_id):
+    cart = Cart(request)
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-    except Cart.DoesNotExist:
-        cart = Cart.objects.create(cart_id=_cart_id(request))
-    cart.save()
-    
-    
-    try:
-        cart_item = CartItem.objects.get(product=product,cart=cart)
-        cart_item.quantity +=1
-        cart_item.save()
-    except CartItem.DoesNotExist:
-        cart_item = CartItem.objects.create(
-            product=product,
-            quantity=1,
-            cart=cart
-        )
-        cart_item.save()
-    return redirect('/')
+        product = Product.objects.get(id=product_id)
+        cart.add(product)
+        return redirect('cart')
+    except Product.DoesNotExist:
+        return redirect('/')
 
 #Remove cart function  
-def remove_cart(request,product_id):
-    cart = Cart.objects.get(cart_id= product_id)
+def remove_cart(request, product_id):
+    cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
-    return redirect('/')
+    cart.remove(product)
+    return redirect('cart')
     
 
 # business

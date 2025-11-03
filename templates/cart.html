@@ -1,35 +1,67 @@
 {% extends 'base.html' %}
 
-<body>
 {% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Shopping Cart</h1>
 
-<main>
-    
-   <h1>Your shopping cart contains:</h1>
-   
-   <thead>
-    you added
-  </thead>
-  <!-- <a href=""><h1><i class="ri-delete-bin-6-line"></i></h1></a> -->
-   {% for cart_item in cart_items %}
-<table class="table">
-      <tr>
-        <!-- <th scope="row">{{ cart_item.product.id }}</th> -->
-        <td colspan="2" class="table-active">{{ cart_item.product.name }}</td>
-        <td>{{ cart_item.product.price }}</td>
-        <td>{{ cart_item.quantity }}</td>
-        <td>{{ cart_item.product. }}</td>
-        <td>Ugx.{{ cart_item.sub_total }}</td>
-        <td>
-          <a href="{% url 'remove_cart' cart_item.product.id %}">
-              <i class="ri-delete-bin-6-line"></i>
-          </a>
-      </td>
-      
-      </tr>
-    </tbody>
-  </table>
-  {% endfor%} 
-</main>
-{% endblock%}
-</body>
+    {% if cart_products %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in cart_products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>Ugx. {{ product.price }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'cart:cart_update' %}" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="number" name="quantity" value="{{ product.quantity }}" min="1" class="form-control" style="width: 80px;">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary ms-2">Update</button>
+                        </form>
+                    </td>
+                    <td>Ugx. {{ product.total_price }}</td>
+                    <td>
+                        <a href="{% url 'cart:cart_delete' product.id %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Remove
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td colspan="2"><strong>Ugx. {{ total }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'home' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+        <a href="#" class="btn btn-success">
+            Proceed to Checkout <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <p>Your cart is empty</p>
+        <a href="{% url 'home' %}" class="btn btn-primary">
+            <i class="fas fa-shopping-cart"></i> Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

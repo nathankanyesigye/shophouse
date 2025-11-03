@@ -12,19 +12,24 @@ def cart_summary(request):
 def cart_add(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
-        product_id = int(request.POST.get( 'productId'))
-        product = get_object_or_404(Product, id = product_id)
+        product_id = int(request.POST.get('productId'))
+        product = get_object_or_404(Product, id=product_id)
         cart.add(product=product)
         cart_quantity = cart.__len__()
-
         response = JsonResponse({'qty': cart_quantity})
         return response
+    elif request.method == 'GET':
+        product_id = request.GET.get('id')
+        if product_id:
+            product = get_object_or_404(Product, id=product_id)
+            cart.add(product=product)
+        return redirect('cart:cart_summary')
 
-def cart_delete(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+def cart_delete(request, id):
+    product = get_object_or_404(Product, id=id)
     cart = Cart(request)
     cart.remove(product)
-    return redirect('cart_summary')
+    return redirect('cart:cart_summary')
 
 def cart_update(request):
     if request.method == 'POST':
@@ -33,14 +38,4 @@ def cart_update(request):
         product = get_object_or_404(Product, id=product_id)
         cart = Cart(request)
         cart.update(product, quantity)
-        return redirect('cart_summary')
-
-    
-def cart_update(request):
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        quantity = int(request.POST.get('quantity'))
-        product = get_object_or_404(Product, id=product_id)
-        cart = Cart(request)
-        cart.update(product, quantity)
-        return redirect('cart_summary')
+        return redirect('cart:cart_summary')

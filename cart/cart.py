@@ -22,13 +22,16 @@ class Cart():
 
         # If the product is already in the cart, update the quantity
         if product_id in self.cart:
-            pass
+            self.cart[product_id]['quantity'] = self.cart[product_id].get('quantity', 0) + 1
         # If the product is not in the cart, add it
         else:
             self.cart[product_id] = {
                 'price': str(product.price),
+                'quantity': 1,
+                'name': product.name,
+                'image': product.image.url if product.image else None
             }
-        self.session.modified = True    
+        self.session.modified = True
 
     def remove(self, product):
         """
