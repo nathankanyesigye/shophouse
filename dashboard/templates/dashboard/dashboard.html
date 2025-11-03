@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 <div class="container mt-4">
@@ -18,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Total Revenue</h5>
-                    <h2 class="card-text">${{ total_revenue }}</h2>
+                    <h2 class="card-text">{{ total_revenue }}</h2>
                 </div>
             </div>
         </div>
@@ -56,6 +57,8 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Amount</th>
                                     <th>Customer</th>
                                     <th>Status</th>
                                 </tr>
@@ -63,9 +66,17 @@
                             <tbody>
                                 {% for order in recent_orders %}
                                 <tr>
-                                    <td>{{ order.orderDate }}</td>
-                                    <td>{{ order.product.name }}</td>
-                                    <td>{{ order.customer.UserName.user_name }}</td>
+                                    <td>{{ order.orderDate|date:"d M Y" }}</td>
+                                    <td>{{ order.product.name|default:"N/A" }}</td>
+                                    <td>{{ order.quantity|default:"0" }}</td>
+                                    <td>UGX {{ order.total_amount|default:"0"|floatformat:0|intcomma }}</td>
+                                    <td>
+                                        {% if order.customer.UserName %}
+                                            {{ order.customer.UserName.user_name|default:order.customer.UserName.email|default:"Anonymous" }}
+                                        {% else %}
+                                            Guest
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         {% if order.status %}
                                             <span class="badge bg-success">Delivered</span>
