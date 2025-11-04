@@ -80,3 +80,20 @@ class BusinessRegistrationTests(TestCase):
         """Test business fields validation"""
         self.assertEqual(len(self.business.phone_number), 10)
         self.assertTrue('@' in self.business.email)
+
+    def test_business_verification_workflow(self):
+        """Test business verification workflow"""
+        # Default status should be pending
+        self.assertEqual(self.business.verification_status, 'pending')
+        
+        # Test approval
+        self.business.verification_status = 'approved'
+        self.business.save()
+        self.assertEqual(self.business.verification_status, 'approved')
+        self.assertIsNotNone(self.business.verification_date)
+
+        # Test rejection
+        self.business.verification_status = 'rejected'
+        self.business.save()
+        self.assertEqual(self.business.verification_status, 'rejected')
+        self.assertIsNotNone(self.business.verification_date)

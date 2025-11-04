@@ -4,62 +4,116 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Product</h3>
+                    <h3 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Add New Product
+                        <small class="d-block mt-2">
+                            Business: {{ business_name }}
+                        </small>
+                    </h3>
                 </div>
                 <div class="card-body">
-                    <form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                         {% csrf_token %}
                         
-                        {% for field in form %}
                         <div class="mb-4">
-                            <label for="{{ field.id_for_label }}" class="form-label fw-bold">
-                                {{ field.label }}
-                                {% if field.field.required %}
-                                    <span class="text-danger">*</span>
-                                {% endif %}
+                            <label for="{{ form.Category.id_for_label }}" class="form-label fw-bold">
+                                Category <span class="text-danger">*</span>
                             </label>
-                            
-                            {% if field.name == 'image' %}
-                                <div class="input-group">
-                                    <input type="{{ field.field.widget.input_type }}" 
-                                           name="{{ field.name }}"
-                                           class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                           id="{{ field.id_for_label }}"
-                                           accept="image/*"
-                                           onchange="previewImage(this);">
-                                </div>
-                                <div id="imagePreview" class="mt-2 d-none">
-                                    <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
-                                </div>
-                            {% elif field.name == 'description' %}
-                                <textarea name="{{ field.name }}"
-                                          class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                          id="{{ field.id_for_label }}"
-                                          rows="4">{{ field.value|default:'' }}</textarea>
-                            {% else %}
-                                <input type="{{ field.field.widget.input_type }}"
-                                       name="{{ field.name }}"
-                                       class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                       id="{{ field.id_for_label }}"
-                                       value="{{ field.value|default:'' }}"
-                                       {% if field.field.required %}required{% endif %}>
-                            {% endif %}
-                            
-                            {% if field.errors %}
-                                <div class="invalid-feedback">
-                                    {{ field.errors|join:", " }}
-                                </div>
-                            {% endif %}
-                            {% if field.help_text %}
-                                <div class="form-text text-muted">
-                                    {{ field.help_text }}
-                                </div>
+                            {{ form.Category }}
+                            {% if form.Category.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.Category.errors|join:", " }}
+                            </div>
                             {% endif %}
                         </div>
-                        {% endfor %}
-                        
+
+                        <div class="mb-4">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
+                                Product Name <span class="text-danger">*</span>
+                            </label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.name.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.price.id_for_label }}" class="form-label fw-bold">
+                                Price <span class="text-danger">*</span>
+                            </label>
+                            {{ form.price }}
+                            {% if form.price.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.price.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">
+                                Description <span class="text-danger">*</span>
+                            </label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.description.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.image.id_for_label }}" class="form-label fw-bold">
+                                Product Image <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                {{ form.image }}
+                            </div>
+                            {% if form.image.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.image.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                            <div id="imagePreview" class="mt-2 d-none">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.is_sale }}
+                                <label class="form-check-label" for="{{ form.is_sale.id_for_label }}">
+                                    On Sale
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4" id="salePriceField">
+                            <label for="{{ form.sale_price.id_for_label }}" class="form-label fw-bold">
+                                Sale Price
+                            </label>
+                            {{ form.sale_price }}
+                            {% if form.sale_price.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.sale_price.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                             <a href="{% url 'home' %}" class="btn btn-secondary me-md-2">
                                 <i class="fas fa-times me-1"></i> Cancel
@@ -70,6 +124,7 @@
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -94,6 +149,26 @@ function previewImage(input) {
         preview.classList.add('d-none');
     }
 }
+
+// Handle sale price field visibility
+document.addEventListener('DOMContentLoaded', function() {
+    const isSaleCheckbox = document.querySelector('#{{ form.is_sale.id_for_label }}');
+    const salePriceField = document.querySelector('#salePriceField');
+    
+    function toggleSalePriceField() {
+        if (isSaleCheckbox.checked) {
+            salePriceField.style.display = 'block';
+        } else {
+            salePriceField.style.display = 'none';
+        }
+    }
+    
+    // Initial state
+    toggleSalePriceField();
+    
+    // Listen for changes
+    isSaleCheckbox.addEventListener('change', toggleSalePriceField);
+});
 
 // Form validation
 (function () {
