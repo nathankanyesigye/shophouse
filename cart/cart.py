@@ -40,6 +40,7 @@ class Cart():
         product_id = str(product.id)
         if product_id in self.cart:
             del self.cart[product_id]
+            self.session.modified = True  # Mark session as modified to save changes
 
     def update(self, product, quantity):
         """
