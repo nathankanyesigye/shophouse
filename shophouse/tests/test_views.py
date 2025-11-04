@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from shophouse.models import Product, Categories, Profile
+from shophouse.models import Product, Categories, Profile, RegisterBusiness
 from cart.models import Cart, CartItem
 
 class ViewsTest(TestCase):
@@ -63,3 +63,34 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('update_user'))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login/?next=/update_user/')
+
+    def test_business_registration_view(self):
+        """Test business registration and verification workflow"""
+        # Login required for business registration
+        self.client.login(username='testuser', password='12345')
+        
+        # Test business registration
+        business_data = {
+            'name_of_business': 'Test Business',
+            'type_of_business': 'Retail',
+            'email': 'test@business.com',
+            'address': '123 Test St',
+            'description': 'Test Description',
+            'phone_number': '1234567890'
+        }
+        response = self.client.post(reverse('registerbusiness'), business_data)
+        self.assertEqual(response.status_code, 302)  # Should redirect after successful registration
+        
+        # Verify business was created with pending status
+        business = RegisterBusiness.objects.get(name_of_business='Test Business')
+        self.assertEqual(business.verification_status, 'pending')
+        
+        # Test adding product before verification (should fail)
+        product_data = {
+            'name': 'Test Product',
+            'description': 'Test Description',
+            'price': '100',
+            'Category': self.category.id
+        }
+        response = self.client.post(reverse('addproduct'), product_data)
+        self.assertEqual(response.status_code, 302)  # Should redirect with error

@@ -37,7 +37,9 @@
         <nav>
             <ul>
                 <li><a href="{%url 'home' %}"><i class="ri-home-8-fill"></i>Home</a></li>
-                <li><a href="{%url 'addproduct' %}"><i class="ri-product-hunt-line"></i>Add Products</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{%url 'addproduct' %}"><i class="ri-product-hunt-line"></i>Add Products</a></li>
+                {% endif %}
                 <li><a href="#"><i class="ri-menu-5-line"></i>Categories</a></li>
                 <li><a href="{%url 'about' %}"><i class="ri-menu-2-fill"></i>About Us</a></li>
             </ul>
