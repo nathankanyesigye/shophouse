@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from .forms import BusinessRegistration, Productform
 from . models import *
 from django.db.models import Q
@@ -8,15 +10,25 @@ from django.db.models import Q
 def categories_summary(request):
     return render(request,'categories_summary.html',{})
 
+@login_required
 def registerbusiness(request):
     if request.method == 'POST':
-        form= BusinessRegistration(request.POST, request.FILES)
+        form = BusinessRegistration(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return render (request, 'index.html')
+            business = form.save(commit=False)
+            business.owner = request.user
+            business.verification_status = 'pending'
+            business.save()
+            messages.success(request, "Your business registration has been submitted for review. Our admin team will verify your details.")
+            return redirect('home')
     else:
+        # Check if user already has a business
+        existing_business = RegisterBusiness.objects.filter(owner=request.user).first()
+        if existing_business:
+            messages.info(request, f"You already have a registered business: {existing_business.name_of_business} ({existing_business.get_verification_status_display()})")
+            return redirect('home')
         form = BusinessRegistration()
-        return render(request, 'registerbusiness.html',{'form':form})
+    return render(request, 'registerbusiness.html', {'form': form})
 def product(request, pk):
     product= Product.objects.get(id = pk)
     return render (request , 'product.html' , {'product':product})
@@ -24,7 +36,9 @@ def product(request, pk):
 #  home page function 
 def home(request):
     products = Product.objects.all()
-    return render(request, 'index.html', { "products": products })
+    # Filter out products without images
+    products_with_images = [p for p in products if p.image]
+    return render(request, 'index.html', { "products": products_with_images })
 
 # register/ signup function
 def register(request):
@@ -113,49 +127,111 @@ def search_products(request):
         return render(request, 'search.html', {})
     
 # Add product function 
- 
+@login_required
 def addproduct(request):
-    form = Productform()
-    if request.method == 'POST':
-        form= Productform(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+    try:
+        business = RegisterBusiness.objects.get(owner=request.user)
         
-    else:
-        form = Productform()
+        # Verify business approval status
+        if business.verification_status != 'approved':
+            messages.warning(request, 
+                f"Your business '{business.name_of_business}' needs to be approved before adding products. "
+                f"Current status: {business.get_verification_status_display()}")
+            return redirect('home')
         
-    context = {
-        'form':form
+        if request.method == 'POST':
+            form = Productform(request.POST, request.FILES)
+            if form.is_valid():
+                try:
+                    product = form.save(commit=False)
+                    product.business = business
+                    
+                    # Validate sale price if product is on sale
+                    if product.is_sale and product.sale_price >= product.price:
+                        messages.error(request, "Sale price must be less than the regular price.")
+                    else:
+                        product.save()
+                        messages.success(request, 
+                            f"Product '{product.name}' has been added successfully to {business.name_of_business}.")
+                        return redirect('home')
+                except Exception as e:
+                    messages.error(request, f"Error saving product: {str(e)}")
+            else:
+                messages.error(request, "Please correct the errors below.")
+        else:
+            form = Productform()
         
-    }
-    return render(request, 'addproduct.html', context)
+        context = {
+            'form': form,
+            'business': business,
+            'business_name': business.name_of_business,
+            'verification_status': business.get_verification_status_display()
+        }
+        return render(request, 'addproduct.html', context)
+            
+    except RegisterBusiness.DoesNotExist:
+        messages.error(request, "Please register your business before adding products.")
+        return redirect('registerbusiness')
 
 
 # Update product function
-
-def updateproduct(request,pk):
-    product = Product.objects.get(id=pk)
-    form = Productform(instance=product)
-    
-    if request.method == 'POST':
-        form = Productform(request.POST, request.FILES,  instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+@login_required
+def updateproduct(request, pk):
+    try:
+        product = get_object_or_404(Product, id=pk)
         
-    context = {
-        'form':form
+        # Check if user owns the business that owns this product
+        if not product.business or product.business.owner != request.user:
+            messages.error(request, "You don't have permission to edit this product.")
+            return redirect('product', pk=pk)
         
-    }
-    return render(request, 'updateproduct.html', context)
+        # Check if business is still approved
+        if product.business.verification_status != 'approved':
+            messages.error(request, 
+                f"Your business '{product.business.name_of_business}' is {product.business.get_verification_status_display()}. "
+                "You cannot edit products until your business is verified.")
+            return redirect('product', pk=pk)
+        
+        if request.method == 'POST':
+            form = Productform(request.POST, request.FILES, instance=product)
+            if form.is_valid():
+                try:
+                    updated_product = form.save(commit=False)
+                    # Ensure business association doesn't change
+                    updated_product.business = product.business
+                    
+                    # Validate sale price if product is on sale
+                    if updated_product.is_sale and updated_product.sale_price >= updated_product.price:
+                        messages.error(request, "Sale price must be less than the regular price.")
+                    else:
+                        updated_product.save()
+                        messages.success(request, f"Product '{updated_product.name}' has been updated successfully.")
+                        return redirect('product', pk=pk)
+                except Exception as e:
+                    messages.error(request, f"Error updating product: {str(e)}")
+            else:
+                messages.error(request, "Please correct the errors below.")
+        else:
+            form = Productform(instance=product)
+        
+        context = {
+            'form': form,
+            'product': product,
+            'business_name': product.business.name_of_business
+        }
+        return render(request, 'updateproduct.html', context)
+        
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+        return redirect('home')
 
 # delete product function
-
-def deleteproduct(request,pk):
-    product = Product.objects.get(id=pk)
-    product.delete()
-    return redirect('/')
+@login_required
+def deleteproduct(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    if product.business and product.business.owner == request.user:
+        product.delete()
+    return redirect('home')
 
 
 #cart functions
